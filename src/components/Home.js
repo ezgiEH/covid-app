@@ -6,34 +6,34 @@ import { fetchCountries } from "../redux/Country/Services";
 
 const { getName } = require("country-list");
 
-const mapData = {
-
-  };
-
 function Map(){
 
     const dispatch = useDispatch()
     const country = useSelector(state => state.country.items)
+    const isLoading = useSelector(state => state.country.isLoading)
+
     const [countryName, setCountryName] = useState([])
-    
+   
     const handleClick = (e, countryCode) => { 
+      e.preventDefault();
         setCountryName(getName(countryCode))
         dispatch(fetchCountries(countryCode))
       };
 
- 
-
+    
+   
   return (
-    <div>
+    <div className="map">
+      <h1>Covid-19</h1>
       <VectorMap
         map={"world_mill"}
-        backgroundColor="#0077be" 
+        backgroundColor="transparent" 
         zoomOnScroll={false}
         containerStyle={{
           width: "100%",
-          height: "520px"
+          height: "400px"
         }}
-        onRegionClick={handleClick} //gets the country code
+        onRegionClick= {handleClick}
         containerClassName="map"
         regionStyle={{
           initial: {
@@ -54,18 +54,19 @@ function Map(){
             fill: "#2938bc"
           }
         }}
+       
         regionsSelectable={true}
-        series={{
-          regions: [
-            {
-              values: mapData, //this is your data
-              scale: ["#146804", "#ff0000"], //your color game's here
-              normalizeFunction: "polynomial"
-            }
-          ]
-        }}
+        // onRegionTipShow = {(e, el, code) => {
+        //   if (code) {
+        //     el.html(el.html() + '<br/>Confirmed:' + country.confirmed.value + '<br/> Recovered:' + country.recovered.value + '<br/>Deaths:' + country.deaths.value);
+        //   } else {
+        //     el.html.preventDefault();
+        //   }
+        // }}
+        
       />
-        {country && (
+      {!isLoading && <h2>Select Country...</h2>}
+        {country && isLoading && (
             <div>
                 <h1>{countryName}</h1>
                 <h2>Confirmed: {country.confirmed?.value}</h2>

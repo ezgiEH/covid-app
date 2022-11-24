@@ -6,27 +6,28 @@ export const countrySlice = createSlice({
     name: 'country',
     initialState: {
         items: [],
+        isLoading: false,
     },
     reducers: {},
     extraReducers: {
         [fetchCountries.pending]: (state, action) => {
-            state.status = 'loading';
+            state.isLoading = true;
         },
         [fetchCountries.fulfilled]: (state, action) => {
             state.items = action.payload;
         },
         [fetchCountries.rejected]: (state, action) => {
-            state.status = 'failed';
+            state.isLoading = false;
         },
 
         [fetchConfirmed.pending]: (state, action) => {
-            state.status = 'loading';
+            state.isLoading = true;
         },
         [fetchConfirmed.fulfilled]: (state, action) => {
             state.items = action.payload;
         },
         [fetchConfirmed.rejected]: (state, action) => {
-            state.status = 'failed';
+            state.isLoading = false;
         },
     },
 })
